@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Frank Siderio
+	 10/2/2014
+	 Introduction to Programming
+	 Project 4 - Taylor Swift vs. Beyonce -->
+	 
+	<head>
+		<title>
+			Taylor Swift vs. Beyonce 
+		</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+      
+      <script type = "text/javascript" src = "game5.js"></script>
+      <script src = "locations2.js"></script>
+       
+      <style>
+      	.EmailFont{font-style: italic;}
+      </style>
+		
+	
+	</head>
+	
+	<body onload = "init()">
+	
+	<h1>Taylor Swift vs. Beyonce</h1>
+	
+	<h4> Will you survive as Beyonce is Taylor's prison? </h4>
+	
+	<textarea rows="20" cols="50" id="taMain" readonly = "readonly">
+
+	</textarea>
+	
+	<br></br>
+	
+	<input type="button"
+              value="Up" 
+              id = "UpButton"
+              onclick="btnGo_clickUp();" /> 
+    
+    <input type = "button"
+    		value = "Down"
+    		id = "DownButton"
+    		onclick = "btnGo_clickDown();" /> 
+    		
+    <input type = "button"
+    		value = "Right"
+    		id = "RightButton"
+    		onclick = "btnGo_clickRight();" />
+    		
+    <input type = "button"
+    		value = "Left"
+    		id = "LeftButton"
+    		onclick = "btnGo_clickLeft();" />
+    		
+	<br></br>
+	
+    <input type="text" 
+		id = "txtCommand"
+		name= "txtCommand"
+		onkeypress = "txtCommand_keyPress(event);" />
+		
+	<input type = "button"
+			value = "Go"
+			onclick = "btnGo_click();" />
+
+    
+    <p class = "EmailFont">
+    	<a href = "mailto:Frank.Siderio1@marist.edu?Subject=Your%20game%20was%20oustanding!">Send me an e-mail</a>
+    </p>
+    
+    <img src = "map1F.jpg" id = "map" alt="map" style = "width:304px;height:228px">
+    		
+	</body>
+
+</html>
