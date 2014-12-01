@@ -1,26 +1,14 @@
 var playerLocation = 0;
-var counterRoom0 = 0;
-var counterRoom1 = 0;
-var counterRoom2 = 0;
-var counterRoom3 = 0;
-var counterRoom4 = 0;
-var counterRoom5 = 0;
-var counterRoom6 = 0;
-var counterRoom7 = 0;
-var counterRoom8 = 0;
-var counterRoom9 = 0;
+var counters = [9];
 var counterMoves = 0;
 var errorCount = 0;
 var changedMap = false;
-//var key = false;
-//var keyCard = false;
-//var doYouHaveMJ = false;
 var power = false; // false means power is off
 var locArray = [];
 var inventory = ["", "", "", ""];
 
 
-
+//Item object
 function Item()
 {
 	this.name = "";
@@ -53,16 +41,14 @@ password.desc = "Alan is Awesome";
 password.loc = 2; 
 
 
-	
+//initial message	
 function init()
 {
 	display_Message("Taylor Swift wants to become number 1 and stay that way forever. " +
 	"You are Beyonce and must survive in this advanced prison she has put you in. " + 
-	"The goal of the game is to escape and release her new album to the entire world for free.");
-
-	
-
-	look();
+	"The goal of the game is to escape and release her new album to the entire world for free.\n\n" +
+	"You are in the center of the prison. Something went wrong. " +
+		"The power went off and there is a flashlight on the ground. You pick it up.");
 	
 }
 
@@ -431,36 +417,7 @@ function changeMap()
 //utilize this more in the future.
 function doCounter()
 {
-	if(playerLocation === 0)
-		counterRoom0++;
-
-	else if(playerLocation === 1)
-		counterRoom1++;
-
-	else if(playerLocation === 2)		
-		counterRoom2++;
-	
-	else if(playerLocation === 3)
-		counterRoom3++;
-
-	else if(playerLocation === 4)		
-		counterRoom4++;
-	
-	else if(playerLocation === 5)		
-		counterRoom5++;
-	
-	else if(playerLocation === 6)
-		counterRoom6++;
-		
-	else if(playerLocation === 7)
-		counterRoom7++;
-	
-	else if(playerLocation === 8)			
-		counterRoom8++;
-
-	else if(playerLocation === 9)			
-		counterRoom9++;
-		
+	counters[playerLocation]++;
 	counterMoves++;
 
 }
@@ -502,14 +459,14 @@ function btnGo_click()
 	else if(input.value === "Left" || input.value === "left")
 		btnGo_clickLeft();
 		
-	else if(input.value === "take" && playerLocation === 1)
+	else if(input.value === "take" && playerLocation === key.loc)
 	{
 		key.hasIt = true;
 		inventory[0] = key.name;
 		display_Message(key.toString());
 	}
 		
-	else if(input.value === "take" && playerLocation === 4)
+	else if(input.value === "take" && playerLocation === keyCard.loc)
 	{
 		keyCard.hasIt = true;
 		inventory[1] = keyCard.name;
@@ -518,7 +475,7 @@ function btnGo_click()
 		
 	else if(input.value === "unlock" && key.hasIt === true)
 	{
-		if(playerLocation === 7)
+		if(playerLocation === mJ.loc)
 		{
 			inventory[2] = mJ.name;
 			mJ.hasIt = true;
@@ -526,7 +483,7 @@ function btnGo_click()
 		}
 	}
 
-	else if(input.value === "write" && playerLocation === 2)
+	else if(input.value === "write" && playerLocation === password.loc)
 	{
 		inventory[3] = password.name + password.desc;
 		display_Message(password.toString());
@@ -551,7 +508,7 @@ function btnGo_click()
 	else
 	{
 		display_Message("Error. Valid Inputs: Up,up,Down,down,Right,right,Left,left\n");
-		display_Message("take, unlock, inventory");
+		display_Message("take, unlock, inventory, write (only if you are at the correct location)");
 	} 
 
 }
