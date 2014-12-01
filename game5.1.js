@@ -17,7 +17,8 @@ var changedMap = false;
 //var doYouHaveMJ = false;
 var power = false; // false means power is off
 var locArray = [];
-var inventory = [];
+var inventory = ["", "", "", ""];
+
 
 
 function Item()
@@ -43,7 +44,7 @@ keyCard.name = "Key Card";
 keyCard.loc = 4;
 
 var mJ = new Item();
-mJ.name = "Michael";
+mJ.name = "Michael Jackson";
 mJ.loc = 7;
 
 var password = new Item();
@@ -353,7 +354,7 @@ function disable_Buttons()
 		
 		else if(changedMap === true)
 		{
-			if(keyCard === true)
+			if(keyCard.hasIt === true)
 			{
 				document.getElementById("UpButton").disabled = true; //disabled button
 				document.getElementById("DownButton").disabled = false;
@@ -465,14 +466,14 @@ function doCounter()
 }
 
 
-//if the player finds a way to break the game
+//if the player messes up
 function NavigationError()
 {
-	var errorMessage = "Error you managed to find a way to break the game. Nice.";
+	var errorMessage = "You cannot go that way.";
 	errorCount++;
 	
 	if(errorCount === 3)
-		alert("Okay. You broke it. Please let me know how and I will fix it.");
+		alert("Okay. That is enough.");
 		
 	display_Message(errorMessage);
 	
@@ -527,7 +528,7 @@ function btnGo_click()
 
 	else if(input.value === "write" && playerLocation === 2)
 	{
-		inventory[3] = password.name;
+		inventory[3] = password.name + password.desc;
 		display_Message(password.toString());
 	}
 	
@@ -543,7 +544,7 @@ function btnGo_click()
 	else if(input.value === "inventory")
 	{	
 		for(var i = 0; i < 4; i++)
-			display_Message(inventory[i].toString());
+			display_Message(inventory[i]);
 	
 	}
 	
@@ -551,7 +552,7 @@ function btnGo_click()
 	{
 		display_Message("Error. Valid Inputs: Up,up,Down,down,Right,right,Left,left\n");
 		display_Message("take, unlock, inventory");
-	}
+	} 
 
 }
 
