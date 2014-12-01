@@ -1,3 +1,17 @@
+
+//Location object
+function Location()
+{
+	this.desc = ""; //since the item objects are separate the description is the only attribute neccessary here
+	
+	this.toString = function()
+			{
+				return this.desc;
+			}
+
+}
+
+//storing the location objects in the array
 locArray[0] = new Location();
 locArray[1] = new Location();
 locArray[2] = new Location();
@@ -11,33 +25,10 @@ locArray[9] = new Location();
 locArray[10] = new Location();
 
 
-function Location()
-{
-	this.name = "";
-	this.desc = "";
-	this.item = "";
-
-	this.toString = function()
-			{
-				return this.desc + this.item;
-			}
-
-
-}
-
-
-
-
-
-//instances of the locations
+//using the array's to add the descriptions of the locations
 function loc0_Center()
 {
-	if(counterRoom0 === 0)
-		locArray[0].desc = "You are in the center of the prison. Something went wrong. " +
-		"The power went off and there is a flashlight on the ground. You pick it up.";
-	
-	else
-		locArray[0].desc = "You are in the center of the prison.";
+	locArray[0].desc = "You are in the center of the prison.";
 	
 	doCounter();
 	
