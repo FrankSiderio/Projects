@@ -47,7 +47,7 @@ function loc2_Computer()
 		
 	else
 		locArray[2].desc = "Good job! You go into the computer and find the password to release "+
-		"Taylor's album to the whole world! It's 'Alan is Awesome' Who's Alan? Enter in 'write' to write it down.";	
+		"Taylor's album to the whole world! It's 'Alan is Awesome7' Who's Alan? Enter in 'write' to write it down.";	
 }
 
 function loc3_HarryStyles()
