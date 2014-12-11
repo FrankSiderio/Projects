@@ -53,13 +53,14 @@ keyCard.id = "take";
 keyCard.loc = 4;
 
 var mJ = new Item();
+mJ.id = "unlock";
 mJ.name = "Michael Jackson";
 mJ.loc = 7;
 
 var password = new Item();
 password.name = "Password:";
 password.id = "write";
-password.desc = "Alan is Awesome";
+password.desc = "Alan is Awesome7";
 password.loc = 2; 
 
 
@@ -304,7 +305,7 @@ function btnGo_click()
 	else if(input.value === "Right" || input.value === "right")
 	{
 		if(changedMap === true && power === true)    //they can only go right here if the power is on and
-			btnGo_clickRight();    // the map is changed
+			btnGo_clickRight();   					 // the map is changed
 		
 		else
 			NavigationError();
@@ -315,9 +316,15 @@ function btnGo_click()
 		
 	else if(input.value === key.id && playerLocation === key.loc)
 	{
-		key.hasIt = true;
-		inventory[0] = key.name;
-		display_Message(key.toString());
+		if(key.hasIt === false) //fixes the problem if they already have the item
+		{
+			key.hasIt = true;
+			inventory[0] = key.name;
+			display_Message(key.toString());
+		}
+		
+		else
+			display_Message("You already have the key.");
 	}
 		
 	else if(input.value === keyCard.id && playerLocation === keyCard.loc)
@@ -330,28 +337,38 @@ function btnGo_click()
 		}
 		
 		else
-			display_Message("You already have the key.");
+			display_Message("You already have the key card.");
 	}
 		
-	else if(input.value === "unlock" && key.hasIt === true)
+	else if(input.value === mJ.id && key.hasIt === true)
 	{
-		if(playerLocation === 7)
+		if(playerLocation === 7 && mJ.hasIt === false)
 		{
 			inventory[2] = mJ.name;
 			mJ.hasIt = true;
 			display_Message(mJ.toString());
 		}
+		
+		else
+			display_Message("You already have MJ.");
 	}
 
 	else if(input.value === password.id && playerLocation === password.loc)
 	{
-		inventory[3] = password.name + password.desc;
-		display_Message(password.toString());
+		if(password.hasIt === false)
+		{
+			inventory[3] = password.name + password.desc;
+			password.hasIt = true;
+			display_Message(password.toString());
+		}
+		
+		else
+			display_Message("You already have the password.");
 	}
 	
 	else if(playerLocation === 10)
 	{
-		if(input.value === "Alan is Awesome")
+		if(input.value === password.desc)
 			display_Message("You Win!");
 		
 		else
@@ -360,8 +377,7 @@ function btnGo_click()
 	
 	else if(input.value === "inventory")
 	{	
-		for(var i = 0; i < 4; i++)
-			display_Message(inventory[i]);
+		brnGo_clickInventory();
 	}
 	
 	else
@@ -370,6 +386,12 @@ function btnGo_click()
 		display_Message("take, unlock, inventory");
 	} 
 
+}
+
+function btnGo_clickInventory()
+{
+	for(var i = 0; i < 4; i++)
+		display_Message(inventory[i]);
 }
 
 function txtCommand_keyPress(keyboardEvent)
