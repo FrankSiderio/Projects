@@ -3,16 +3,35 @@ var counters = [9];
 var counterMoves = 0;
 var errorCount = 0;
 var changedMap = false;
+
 var power = false; // false means power is off
 var locArray = [];
 var inventory = ["", "", "", ""];
 
+var nav = [ //U   D   R   L
+   /* 0 */  [ 1,  2,  4,  3],
+   /* 1 */  [-1,  0,  5,  8],
+   /* 2 */  [ 0, -1,  6,  7],
+   /* 3 */  [ 8,  7,  0, -1],
+   /* 4 */  [ 5,  6, -1,  0],
+   /* 5 */  [-1,  4, 10,  1],
+   /* 6 */  [ 4, -1, -1,  2],
+   /* 7 */  [ 3, -1,  2, -1],
+   /* 8 */  [-1,  3,  1,  9],
+   /* 9 */  [-1, -1,  8, -1],
+   /* 10*/  [-1, -1, -1, 5]
+   
+	  ];
 
-//Item object
+var UP = 0;
+var DOWN = 1;
+var RIGHT = 2;
+var LEFT= 3;
 function Item()
 {
 	this.name = "";
 	this.desc = "";
+	this.id   = ""; //what the player has to enter in to get the item
 	this.loc = null; //where the item is
 	this.hasIt = false; //if the player has the item
 
@@ -25,10 +44,12 @@ function Item()
 //instances of the items
 var key = new Item();
 key.name = "key";
+key.id = "take";
 key.loc = 1;
 
 var keyCard = new Item();
 keyCard.name = "Key Card";
+keyCard.id = "take";
 keyCard.loc = 4;
 
 var mJ = new Item();
@@ -37,226 +58,55 @@ mJ.loc = 7;
 
 var password = new Item();
 password.name = "Password:";
+password.id = "write";
 password.desc = "Alan is Awesome";
 password.loc = 2; 
 
 
-//initial message	
+	
 function init()
 {
 	display_Message("Taylor Swift wants to become number 1 and stay that way forever. " +
 	"You are Beyonce and must survive in this advanced prison she has put you in. " + 
 	"The goal of the game is to escape and release her new album to the entire world for free.\n\n" +
 	"You are in the center of the prison. Something went wrong. " +
-		"The power went off and there is a flashlight on the ground. You pick it up.");
-	
+	"The power went off and there is a flashlight on the ground. You pick it up.");	
 }
 
 function btnGo_clickUp()
 {
-
-	//middle line of locations 3, 0, 4
-	if(playerLocation === 0)
-	{
-		playerLocation = 1;
-		look();
-	}
-	
-	else if(playerLocation === 3)
-	{
-		playerLocation = 8;
-		look();
-	}
-	
-	else if(playerLocation === 4)
-	{
-		playerLocation = 5;	
-		look();
-	}
-	
-	//bottom line of locations 2, 6, 7
-	else if(playerLocation === 2)
-	{
-		playerLocation = 0;  
-		look();
-	}
-	
-	else if(playerLocation === 6)
-	{
-		playerLocation = 4;
-		look();
-	}
-	
-	else if(playerLocation === 7)
-	{
-		playerLocation = 3;
-		look();
-	}
-
-	else
-		NavigationError();	
-		
+	nextLoc(UP);
+	look();	
 } 
 
 function btnGo_clickDown()
 {
-	//middle line of locations 0, 3, 4
-	if(playerLocation === 0)
-	{
-		playerLocation = 2;
-		look();
-	}
-	
-	else if(playerLocation === 3)
-	{
-		playerLocation = 7;
-		look();
-	}
-	
-	else if(playerLocation === 4)
-	{
-		playerLocation = 6;
-		look();
-	}
-	
-	//Top line of locations 1, 5, 8
-	else if(playerLocation === 1)
-	{
-		playerLocation = 0;
-		look();
-	}
-	
-	else if(playerLocation === 5)
-	{
-		playerLocation = 4;
-		look();
-	}
-	
-	else if(playerLocation === 8)
-	{
-		playerLocation = 3;
-		look();
-	}
-	
-	else
-		NavigationError();
-
+	nextLoc(DOWN);
+	look();
 }  
 
 function btnGo_clickRight()
 {
-	//middle line of locations(going up and down) 0, 1, 2
-	if(playerLocation === 0)
-	{
-		playerLocation = 4;
-		look();
-	}
-	
-	else if(playerLocation === 1)
-	{
-		playerLocation = 5;
-		look();
-	}
-	
-	else if(playerLocation === 2)
-	{
-		playerLocation = 6;
-		look();
-	}
-	
-	//left side of locations(going up and down) 3, 7, 8
-	else if(playerLocation === 3)
-	{
-		playerLocation = 0;
-		look();
-	}
-	
-	else if(playerLocation === 7)
-	{
-		playerLocation = 2;
-		look();
-	}
-	
-	else if(playerLocation === 8)
-	{
-		playerLocation = 1;
-		look();
-	}
-	
-	//top left of unchanged map
-	else if(playerLocation === 9)
-	{
-		playerLocation = 8;
-		look();
-	}
-	
-	//for changed map
-	else if(playerLocation === 5 && changedMap === true)
-	{
-		playerLocation = 10;
-		look();
-	}
-
-	else
-		NavigationError();
+	nextLoc(RIGHT);
+	look();
 }  
 
 function btnGo_clickLeft()
 {
-	//middle line of locations 0, 1, 2
-	if(playerLocation === 0)
-	{
-		playerLocation = 3;
-		look();
-	}
-	
-	else if(playerLocation === 1)
-	{
-		playerLocation = 8;
-		look();
-	}
-	
-	else if(playerLocation === 2)
-	{
-		playerLocation = 7;
-		look();
-	}
-	
-	//right side locations 4, 5, 6
-	else if(playerLocation === 4)
-	{
-		playerLocation = 0;
-		look();
-	}
+	nextLoc(LEFT);
+	look();
+}
 
-	else if(playerLocation === 5)
-	{
-		playerLocation = 1;
-		look();
-	}
-	
-	else if(playerLocation === 6)
-	{
-		playerLocation = 2;
-		look();
-	}
-	
-	//top left location 8 unchanged map
-	else if(playerLocation === 8)
-	{
-		playerLocation = 9;
-		look();
-	}
-	
-	//for changed map
-	else if(playerLocation === 10)
-	{
-		playerLocation = 5;
-		look();
-	}
-	
+
+function nextLoc(dir)
+{
+	var newLoc = nav[playerLocation][dir];
+
+	if (newLoc >= 0)
+		playerLocation = newLoc;
+
 	else
-		NavigationError();    	
+		display_Message("You cannot go that way.");
 }
 
 function disable_Buttons()
@@ -371,41 +221,40 @@ function disable_Buttons()
 
 function look()
 {
-
 	switch(playerLocation) 
 	{
 		case 0: loc0_Center();
-				break;
+			break;
 		case 1: loc1_Key();
-				break; 
+			break; 
 		case 2: loc2_Computer();
-				break;
+			break;
 		case 3: loc3_HarryStyles();
-				break;
+			break;
 		case 4: loc4_KeyCard();
-				break;
+			break;
 		case 5: loc5_DoorRoom();
-				break;
+			break;
 		case 6: loc6_Ex();
-				break;
+			break;
 		case 7: loc7_MJ();
-				break;
+			break;
 		case 8: loc8_Selena();
-				break; 
+			break; 
 		case 9: loc9_Power();
-				if(mJ.hasIt === true)
-				{
-					power = true;
-					changeMap();
-				}
-				break;
+			if(mJ.hasIt === true)
+			{
+				power = true;
+				changeMap();
+			}
+			break;
 		case 10: loc10_Win();
 		
 	}
+	
 	display_Message(locArray[playerLocation].toString());
 	disable_Buttons();
-		
-		
+	doCounter();
 }
 
 function changeMap()
@@ -419,7 +268,6 @@ function doCounter()
 {
 	counters[playerLocation]++;
 	counterMoves++;
-
 }
 
 
@@ -454,28 +302,40 @@ function btnGo_click()
 		btnGo_clickDown();
 
 	else if(input.value === "Right" || input.value === "right")
-		btnGo_clickRight();
+	{
+		if(changedMap === true && power === true)    //they can only go right here if the power is on and
+			btnGo_clickRight();    // the map is changed
+		
+		else
+			NavigationError();
+	}
 
 	else if(input.value === "Left" || input.value === "left")
 		btnGo_clickLeft();
 		
-	else if(input.value === "take" && playerLocation === key.loc)
+	else if(input.value === key.id && playerLocation === key.loc)
 	{
 		key.hasIt = true;
 		inventory[0] = key.name;
 		display_Message(key.toString());
 	}
 		
-	else if(input.value === "take" && playerLocation === keyCard.loc)
+	else if(input.value === keyCard.id && playerLocation === keyCard.loc)
 	{
-		keyCard.hasIt = true;
-		inventory[1] = keyCard.name;
-		display_Message(keyCard.toString());
+		if(keyCard.hasIt === false)
+		{
+			keyCard.hasIt = true;
+			inventory[1] = keyCard.name;
+			display_Message(keyCard.toString());
+		}
+		
+		else
+			display_Message("You already have the key.");
 	}
 		
 	else if(input.value === "unlock" && key.hasIt === true)
 	{
-		if(playerLocation === mJ.loc)
+		if(playerLocation === 7)
 		{
 			inventory[2] = mJ.name;
 			mJ.hasIt = true;
@@ -483,7 +343,7 @@ function btnGo_click()
 		}
 	}
 
-	else if(input.value === "write" && playerLocation === password.loc)
+	else if(input.value === password.id && playerLocation === password.loc)
 	{
 		inventory[3] = password.name + password.desc;
 		display_Message(password.toString());
@@ -502,18 +362,15 @@ function btnGo_click()
 	{	
 		for(var i = 0; i < 4; i++)
 			display_Message(inventory[i]);
-	
 	}
 	
 	else
 	{
 		display_Message("Error. Valid Inputs: Up,up,Down,down,Right,right,Left,left\n");
-		display_Message("take, unlock, inventory, write (only if you are at the correct location)");
+		display_Message("take, unlock, inventory");
 	} 
 
 }
-
-
 
 function txtCommand_keyPress(keyboardEvent)
 {
